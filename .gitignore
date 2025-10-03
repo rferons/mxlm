@@ -1,0 +1,114 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.pid
+.pnp.*
+
+# Package manager caches
+.pnpm-store/
+.yarn/cache/
+.yarn/install-state.gz
+
+# Dependency directories
+node_modules/
+.venv/
+.corepack/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+pip-wheel-metadata/
+pip-log.txt
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.pyre/
+.pytype/
+
+# Build output
+coverage/
+dist/
+build/
+.next/
+.turbo/
+.nuxt/
+parcel-cache/
+.cache/
+.vercel/
+.tmp/
+.out/
+tmp/
+app/build/
+logs/
+
+# Test & coverage reports
+coverage-final.json
+coverage/lcov-report/
+
+# TypeScript
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Environment variables & secrets
+.env
+.env.*
+.env.local
+.env.production.local
+.env.development.local
+.env.test.local
+.envrc
+.docker.env
+*.key
+*.pem
+*.crt
+
+# Framework artifacts
+.prisma/
+.poetry/
+.pyenv/
+.cargo/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iml
+.history/
+
+# OS-specific
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.fseventsd
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Docker / containers
+Dockerfile.local
+.docker/
+
+# Misc
+*.log.*
+*.cache
+*.tmp
+!/.env.example
+!/.env.sample
