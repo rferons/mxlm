@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mxlm.ai/compliance-snapshot.json",
+  "title": "ComplianceSnapshot",
+  "type": "object",
+  "required": ["id", "orgId", "aircraftId", "asOf", "summary"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "orgId": {
+      "type": "string"
+    },
+    "aircraftId": {
+      "type": "string"
+    },
+    "asOf": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "summary": {
+      "type": "object",
+      "description": "Structured compliance rollup including upcoming and overdue items"
+    }
+  },
+  "additionalProperties": false
+}

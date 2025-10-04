@@ -1,0 +1,31 @@
+{
+  "name": "@mxlm/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Prisma schema, migrations, and helpers for the GA Maintenance LogbookLM Postgres database",
+  "scripts": {
+    "compose": "node ./scripts/compose-schema.mjs",
+    "pregenerate": "pnpm run compose",
+    "generate": "prisma generate --schema prisma/.generated/schema.prisma",
+    "premigrate:deploy": "pnpm run compose",
+    "migrate:deploy": "prisma migrate deploy --schema prisma/.generated/schema.prisma",
+    "premigrate:status": "pnpm run compose",
+    "migrate:status": "prisma migrate status --schema prisma/.generated/schema.prisma",
+    "pretest": "pnpm run compose",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "testcontainers": "^10.10.4",
+    "typescript": "^5.6.3",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.9.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}

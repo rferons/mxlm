@@ -1,0 +1,25 @@
+model Directive {
+  id              String           @id @default(cuid())
+  orgId           String
+  directiveType   DirectiveType
+  referenceCode   String
+  title           String
+  status          DirectiveStatus @default(ACTIVE)
+  summary         String?
+  supersededById  String?
+  issuedOn        DateTime?
+  effectiveOn     DateTime?
+  applicability   Json
+  notes           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  organization    Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  supersededBy    Directive?      @relation("DirectiveSupersession", fields: [supersededById], references: [id], onDelete: SetNull)
+  supersedes      Directive[]     @relation("DirectiveSupersession")
+  events          MaintenanceEventDirective[]
+  embeddings      Embedding[]     @relation("DirectiveEmbeddings")
+  dueItems        DueItem[]
+
+  @@unique([orgId, referenceCode])
+  @@index([orgId, directiveType])
+}

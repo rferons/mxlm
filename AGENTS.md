@@ -21,6 +21,7 @@ All agents share this repo and must follow the same tooling, conventions, and wo
 - Unit tests: `pnpm run test` (Vitest 3) and `poetry run pytest`.
 - Full check before merging: `pnpm run verify` (runs lint, Vitest, pytest).
 - CI mirrors these commands; pipelines must stay green.
+- Prisma schemas (packages/db): edit files under `packages/db/prisma/schema/**` and run `pnpm --filter db compose` to rebuild `prisma/.generated/schema.prisma` before calling Prisma CLI manually. Package scripts handle this automatically.
 
 ## TypeScript Style & Patterns
 - Use ES modules, strict TypeScript (`strict: true`) with `tsconfig.json` at repo root.

@@ -1,0 +1,13 @@
+model ComplianceSnapshot {
+  id            String      @id @default(cuid())
+  orgId         String
+  aircraftId    String
+  asOf          DateTime
+  summary       Json
+  createdAt     DateTime    @default(now())
+  organization  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  aircraft      Aircraft    @relation(fields: [aircraftId], references: [id], onDelete: Cascade)
+  embeddings    Embedding[]  @relation("ComplianceSnapshotEmbeddings")
+
+  @@unique([orgId, aircraftId, asOf])
+}
