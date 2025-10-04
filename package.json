@@ -1,18 +1,20 @@
 {
-  "name": "ga-maintenance-logbooklm",
+  "name": "mxlm",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Monorepo for GA Maintenance LogbookLM services and apps",
   "engines": {
     "node": ">=18.17"
   },
   "packageManager": "pnpm@10.18.0",
   "scripts": {
-    "lint": "eslint ./apps ./services ./infrastructure ./packages --ext .ts,.tsx,.js,.cjs --max-warnings=0",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings=0",
     "test": "vitest run --passWithNoTests",
     "verify": "pnpm run lint && pnpm run test && poetry run pytest"
   },
   "devDependencies": {
+    "@eslint/js": "^9.37.0",
     "@types/node": "^22.9.0",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
