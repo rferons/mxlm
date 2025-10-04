@@ -10,7 +10,7 @@
     "outDir": "dist",
     "rootDir": "./",
     "resolveJsonModule": true,
-    "types": ["node"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["bin", "src", "test"],
   "exclude": ["dist", "cdk.out", "node_modules"]

@@ -102,7 +102,6 @@ export class CoreInfrastructureStack extends Stack {
       engine: rds.DatabaseClusterEngine.auroraPostgres({
         version: rds.AuroraPostgresEngineVersion.VER_15_3,
       }),
-      instances: 1,
       writer: rds.ClusterInstance.serverlessV2('Writer', {
         allowMajorVersionUpgrade: false,
         enablePerformanceInsights: true,
@@ -126,7 +125,7 @@ export class CoreInfrastructureStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    const workflowDefinition = new sfn.Chain().start(
+    const workflowDefinition = sfn.Chain.start(
       new sfn.Pass(this, 'StartIngestion', {
         comment: 'Placeholder state until service Lambdas are implemented.',
       }),

@@ -1,5 +1,5 @@
 import { App } from 'aws-cdk-lib';
-import { Match, Template } from '@aws-cdk/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CoreInfrastructureStack } from '../src/core-infrastructure-stack';
 import { environments } from '../src/config/environments';
 
@@ -66,7 +66,7 @@ describe('CoreInfrastructureStack', () => {
         Statement: Match.arrayWith([
           Match.objectLike({
             Principal: Match.objectLike({
-              Service: Match.arrayWith(['lambda.amazonaws.com']),
+              Service: 'lambda.amazonaws.com',
             }),
           }),
         ]),
@@ -77,7 +77,7 @@ describe('CoreInfrastructureStack', () => {
         Statement: Match.arrayWith([
           Match.objectLike({
             Principal: Match.objectLike({
-              Service: Match.arrayWith(['states.amazonaws.com']),
+              Service: 'states.amazonaws.com',
             }),
           }),
         ]),
