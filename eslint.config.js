@@ -12,7 +12,9 @@ export default [
       sourceType: 'module',
       parser: typescriptParser,
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ['*.config.js', '*.config.ts'],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },
