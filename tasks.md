@@ -5,7 +5,7 @@
    - Deliverables: `package.json`, `pnpm-workspace.yaml`, `pyproject.toml`, baseline folders (`apps/`, `services/`, `infrastructure/`, `python/`), lint/test configs, `.github/workflows/ci.yml` running `pnpm lint`, `pnpm test`, and `poetry run pytest`.
    - Verification: `pnpm run verify` aggregates lint + TS tests + `poetry run pytest`; CI must pass on default branch.
 
-2. **Infrastructure Baseline (AWS CDK)**
+2. **Infrastructure Baseline (AWS CDK)** — ✅ Completed
    - Goal: Create TypeScript CDK app defining core serverless resources (S3 buckets with SSE-KMS, Aurora Serverless v2 cluster, Step Functions state machine stub, SQS queues, base IAM roles) and synth automation.
    - Deliverables: `infrastructure/cdk` project with stacks per bounded context, environment config, and assertion tests using `@aws-cdk/assertions`.
    - Verification: `pnpm --filter infrastructure test` executes CDK assertion suite and `pnpm --filter infrastructure cdk synth` succeeds locally.

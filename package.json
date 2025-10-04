@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings=0",
     "test": "vitest run --passWithNoTests",
-    "verify": "pnpm run lint && pnpm run test && poetry run pytest"
+    "verify": "pnpm run lint && pnpm run test && python3 -m poetry run pytest"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
