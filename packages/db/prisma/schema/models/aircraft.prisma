@@ -13,7 +13,7 @@ model Aircraft {
   components     Component[]
   events         MaintenanceEvent[]
   documents      Document[]
-  embeddings     Embedding[]
+  embeddings     Embedding[] @relation("AircraftEmbeddings")
   compliance     ComplianceSnapshot[]
   dueItems       DueItem[]
   shares         Share[]

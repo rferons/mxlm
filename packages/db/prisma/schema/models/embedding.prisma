@@ -7,6 +7,7 @@ model Embedding {
   targetDocumentPageId       String?
   targetDirectiveId          String?
   targetComplianceSnapshotId String?
+  targetAircraftId           String?
   dimensions                 Int
   vector                     Float[]
   createdAt                  DateTime    @default(now())
@@ -17,7 +18,8 @@ model Embedding {
   documentPage               DocumentPage?         @relation("DocumentPageEmbeddings", fields: [targetDocumentPageId], references: [id], onDelete: Cascade)
   directive                  Directive?            @relation("DirectiveEmbeddings", fields: [targetDirectiveId], references: [id], onDelete: Cascade)
   complianceSnapshot         ComplianceSnapshot?   @relation("ComplianceSnapshotEmbeddings", fields: [targetComplianceSnapshotId], references: [id], onDelete: Cascade)
+  aircraft                   Aircraft?             @relation("AircraftEmbeddings", fields: [targetAircraftId], references: [id], onDelete: Cascade)
 
   @@index([orgId, scope])
-  @@unique([scope, targetEventId, targetDocumentId, targetDocumentPageId, targetDirectiveId, targetComplianceSnapshotId])
+  @@unique([scope, targetEventId, targetDocumentId, targetDocumentPageId, targetDirectiveId, targetComplianceSnapshotId, targetAircraftId])
 }

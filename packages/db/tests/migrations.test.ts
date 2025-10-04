@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
-import { PostgreSqlContainer } from 'testcontainers';
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { Prisma } from '@prisma/client';
 import { applyMigrations, createPrismaClient } from '../src/index.js';
 
@@ -25,7 +25,7 @@ async function dockerIsAvailable() {
 const describeIfDocker = (await dockerIsAvailable()) ? describe : describe.skip;
 
 describeIfDocker('database migrations', () => {
-  let container: PostgreSqlContainer | undefined;
+  let container: StartedPostgreSqlContainer | undefined;
   let databaseUrl: string;
 
   beforeAll(async () => {
@@ -44,7 +44,10 @@ describeIfDocker('database migrations', () => {
   });
 
   it('persists maintenance events, directives, embeddings, and audit rows', async () => {
-    const prisma = createPrismaClient({ datasourceUrl: databaseUrl });
+    const prisma = createPrismaClient({ 
+      datasourceUrl: databaseUrl,
+      prismaOptions: { log: ['error'] }
+    });
 
     const orgId = randomUUID();
     const ownerId = randomUUID();

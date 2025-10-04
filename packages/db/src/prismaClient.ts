@@ -1,10 +1,10 @@
 import { PrismaClient, type Prisma } from '@prisma/client';
 
-export type DatabaseConfig = {
+export interface DatabaseConfig {
   datasourceUrl?: string;
   logQueries?: boolean;
   prismaOptions?: Omit<Prisma.PrismaClientOptions, 'datasources' | 'log'>;
-};
+}
 
 /**
  * createPrismaClient centralizes the options we use across services so migrations/tests

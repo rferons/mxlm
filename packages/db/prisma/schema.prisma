@@ -5,14 +5,4 @@
 // before invoking Prisma CLI commands manually. Package scripts already do
 // this for you.
 //
-// We mirror the generator and datasource blocks here so IDE extensions can
-// discover connection metadata without parsing the composed output.
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+// The generator and datasource blocks are defined in the composed schema.

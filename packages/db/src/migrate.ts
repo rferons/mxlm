@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process';
 
 const packageRoot = dirname(fileURLToPath(new URL('..', import.meta.url)));
 const composedSchemaPath = join('prisma', '.generated', 'schema.prisma');
+const originalSchemaPath = join('prisma', 'schema.prisma');
 
 export interface MigrationOptions {
   databaseUrl: string;
@@ -12,8 +13,8 @@ export interface MigrationOptions {
 
 async function runCompose() {
   await new Promise<void>((resolve, reject) => {
-    const child = spawn('pnpm', ['run', 'compose'], {
-      cwd: packageRoot,
+    const child = spawn('pnpm', ['--filter', '@mxlm/db', 'run', 'compose'], {
+      cwd: join(packageRoot, '..', '..'), // Go to project root
       stdio: 'inherit',
     });
 
@@ -28,13 +29,14 @@ async function runCompose() {
   });
 }
 
-async function runPrismaCommand(args: string[], databaseUrl: string) {
+async function runPrismaCommand(args: string[], databaseUrl: string, useOriginalSchema = false) {
   await new Promise<void>((resolve, reject) => {
+    const schemaPath = useOriginalSchema ? originalSchemaPath : composedSchemaPath;
     const child = spawn(
       'pnpm',
-      ['exec', 'prisma', ...args, '--schema', composedSchemaPath],
+      ['--filter', '@mxlm/db', 'exec', 'prisma', ...args, '--schema', schemaPath],
       {
-        cwd: packageRoot,
+        cwd: packageRoot, // Use the package root for migrations
         env: {
           ...process.env,
           DATABASE_URL: databaseUrl,
@@ -54,16 +56,33 @@ async function runPrismaCommand(args: string[], databaseUrl: string) {
   });
 }
 
-export async function applyMigrations({ databaseUrl, skipGenerate }: MigrationOptions) {
+export async function applyMigrations({ databaseUrl }: MigrationOptions) {
   if (!databaseUrl) {
     throw new Error('DATABASE_URL is required to apply migrations.');
   }
 
   await runCompose();
 
-  if (!skipGenerate) {
-    await runPrismaCommand(['generate'], databaseUrl);
+  // Create a symlink to the migrations directory in the .generated folder
+  const migrationsDir = join(packageRoot, 'db', 'prisma', 'migrations');
+  const generatedMigrationsDir = join(packageRoot, 'db', 'prisma', '.generated', 'migrations');
+  
+  
+  try {
+    // Remove existing symlink if it exists
+    await import('fs').then(fs => fs.promises.unlink(generatedMigrationsDir).catch(() => {
+      // Ignore errors when removing non-existent symlink
+    }));
+    // Create symlink to migrations directory
+    await import('fs').then(fs => fs.promises.symlink(migrationsDir, generatedMigrationsDir, 'dir'));
+  } catch {
+    // If symlink fails, copy the migrations directory
+    await import('fs').then(fs => fs.promises.cp(migrationsDir, generatedMigrationsDir, { recursive: true }));
   }
 
+  // Use the composed schema for migrations
   await runPrismaCommand(['migrate', 'deploy'], databaseUrl);
+
+  // Always generate the client to ensure it's available
+  await runPrismaCommand(['generate'], databaseUrl);
 }

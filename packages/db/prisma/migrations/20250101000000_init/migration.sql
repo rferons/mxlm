@@ -257,6 +257,7 @@ CREATE TABLE "Embedding" (
     "targetDocumentPageId" TEXT,
     "targetDirectiveId" TEXT,
     "targetComplianceSnapshotId" TEXT,
+    "targetAircraftId" TEXT,
     "dimensions" INTEGER NOT NULL,
     "vector" DOUBLE PRECISION[] NOT NULL,
     "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -266,13 +267,14 @@ CREATE TABLE "Embedding" (
     CONSTRAINT "Embedding_targetDocumentId_fkey" FOREIGN KEY ("targetDocumentId") REFERENCES "Document"("id") ON DELETE CASCADE,
     CONSTRAINT "Embedding_targetDocumentPageId_fkey" FOREIGN KEY ("targetDocumentPageId") REFERENCES "DocumentPage"("id") ON DELETE CASCADE,
     CONSTRAINT "Embedding_targetDirectiveId_fkey" FOREIGN KEY ("targetDirectiveId") REFERENCES "Directive"("id") ON DELETE CASCADE,
-    CONSTRAINT "Embedding_targetComplianceSnapshotId_fkey" FOREIGN KEY ("targetComplianceSnapshotId") REFERENCES "ComplianceSnapshot"("id") ON DELETE CASCADE
+    CONSTRAINT "Embedding_targetComplianceSnapshotId_fkey" FOREIGN KEY ("targetComplianceSnapshotId") REFERENCES "ComplianceSnapshot"("id") ON DELETE CASCADE,
+    CONSTRAINT "Embedding_targetAircraftId_fkey" FOREIGN KEY ("targetAircraftId") REFERENCES "Aircraft"("id") ON DELETE CASCADE
 );
 
 CREATE INDEX "Embedding_orgId_scope_idx" ON "Embedding" ("orgId", "scope");
 ALTER TABLE "Embedding"
   ADD CONSTRAINT "Embedding_scope_targets_unique"
-  UNIQUE ("scope", "targetEventId", "targetDocumentId", "targetDocumentPageId", "targetDirectiveId", "targetComplianceSnapshotId");
+  UNIQUE ("scope", "targetEventId", "targetDocumentId", "targetDocumentPageId", "targetDirectiveId", "targetComplianceSnapshotId", "targetAircraftId");
 
 -- Due items
 CREATE TABLE "DueItem" (
