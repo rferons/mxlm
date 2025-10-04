@@ -7,7 +7,7 @@ import { resolveEnvironment } from '../src/config/environments';
 const app = new App();
 const environment = resolveEnvironment(app);
 
-new CoreInfrastructureStack(app, `LogbookLM-${environment.name}`, {
+new CoreInfrastructureStack(app, `MXLM-${environment.name}`, {
   env: { account: environment.account, region: environment.region },
   envConfig: environment,
 });

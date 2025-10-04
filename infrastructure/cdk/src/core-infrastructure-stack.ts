@@ -32,14 +32,14 @@ export class CoreInfrastructureStack extends Stack {
   public constructor(scope: Construct, id: string, props: CoreInfrastructureStackProps) {
     super(scope, id, {
       description:
-        'Core infrastructure for GA Maintenance LogbookLM: buckets, queues, Aurora, Step Functions, and IAM roles.',
+        'Core infrastructure for MXLM: buckets, queues, Aurora, Step Functions, and IAM roles.',
       env: props.env,
       stackName: id,
       tags: { Environment: props.envConfig.name },
     });
 
     this.dataKey = new kms.Key(this, 'PrimaryDataKey', {
-      alias: `alias/logbooklm/${props.envConfig.name}/primary`,
+      alias: `alias/mxlm/${props.envConfig.name}/primary`,
       enableKeyRotation: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -55,14 +55,14 @@ export class CoreInfrastructureStack extends Stack {
     });
 
     const deadLetterQueue = new sqs.Queue(this, 'IngestionDeadLetterQueue', {
-      queueName: `logbooklm-${props.envConfig.name}-ingestion-dlq`,
+      queueName: `mxlm-${props.envConfig.name}-ingestion-dlq`,
       retentionPeriod: Duration.days(14),
       encryption: sqs.QueueEncryption.KMS,
       encryptionMasterKey: this.dataKey,
     });
 
     this.ingestionQueue = new sqs.Queue(this, 'IngestionQueue', {
-      queueName: `logbooklm-${props.envConfig.name}-ingestion`,
+      queueName: `mxlm-${props.envConfig.name}-ingestion`,
       visibilityTimeout: Duration.minutes(5),
       deadLetterQueue: {
         queue: deadLetterQueue,
@@ -98,7 +98,7 @@ export class CoreInfrastructureStack extends Stack {
     });
 
     this.auroraCluster = new rds.DatabaseCluster(this, 'AuroraCluster', {
-      clusterIdentifier: `logbooklm-${props.envConfig.name}-aurora`,
+      clusterIdentifier: `mxlm-${props.envConfig.name}-aurora`,
       engine: rds.DatabaseClusterEngine.auroraPostgres({
         version: rds.AuroraPostgresEngineVersion.VER_15_3,
       }),
@@ -109,7 +109,7 @@ export class CoreInfrastructureStack extends Stack {
       serverlessV2MinCapacity: props.envConfig.auroraCapacity.minCapacity,
       serverlessV2MaxCapacity: props.envConfig.auroraCapacity.maxCapacity,
       vpc,
-      defaultDatabaseName: 'logbooklm',
+      defaultDatabaseName: 'mxlm',
       securityGroups: [dbSecurityGroup],
       storageEncrypted: true,
       storageEncryptionKey: this.dataKey,
@@ -120,7 +120,7 @@ export class CoreInfrastructureStack extends Stack {
     });
 
     const workflowLogGroup = new logs.LogGroup(this, 'IngestionWorkflowLogs', {
-      logGroupName: `/aws/vendedlogs/states/logbooklm/${props.envConfig.name}`,
+      logGroupName: `/aws/vendedlogs/states/mxlm/${props.envConfig.name}`,
       retention: logs.RetentionDays.ONE_MONTH,
       removalPolicy: RemovalPolicy.DESTROY,
     });
@@ -132,7 +132,7 @@ export class CoreInfrastructureStack extends Stack {
     );
 
     this.workflowRole = new iam.Role(this, 'WorkflowExecutionRole', {
-      roleName: `logbooklm-${props.envConfig.name}-workflow`,
+      roleName: `mxlm-${props.envConfig.name}-workflow`,
       assumedBy: new iam.ServicePrincipal('states.amazonaws.com'),
       description: 'Base execution role for Step Functions ingestion workflow.',
     });
@@ -141,7 +141,7 @@ export class CoreInfrastructureStack extends Stack {
     this.dataKey.grantEncryptDecrypt(this.workflowRole);
 
     this.ingestionStateMachine = new sfn.StateMachine(this, 'IngestionWorkflow', {
-      stateMachineName: `logbooklm-${props.envConfig.name}-ingestion`,
+      stateMachineName: `mxlm-${props.envConfig.name}-ingestion`,
       definitionBody: sfn.DefinitionBody.fromChainable(workflowDefinition),
       stateMachineType: sfn.StateMachineType.EXPRESS,
       role: this.workflowRole,
@@ -152,7 +152,7 @@ export class CoreInfrastructureStack extends Stack {
     });
 
     this.ingestionLambdaRole = new iam.Role(this, 'IngestionLambdaRole', {
-      roleName: `logbooklm-${props.envConfig.name}-ingestion-lambda`,
+      roleName: `mxlm-${props.envConfig.name}-ingestion-lambda`,
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       description: 'Shared execution role for ingestion Lambdas.',
       managedPolicies: [
