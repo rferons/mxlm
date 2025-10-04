@@ -1,0 +1,11 @@
+model SourceReference {
+  id             String       @id @default(cuid())
+  documentPageId String
+  bbox           Json
+  lineIndex      Int?
+  note           String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  page           DocumentPage @relation(fields: [documentPageId], references: [id], onDelete: Cascade)
+  eventSources   MaintenanceEventSource[]
+}

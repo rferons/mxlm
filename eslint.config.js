@@ -13,7 +13,7 @@ export default [
       parser: typescriptParser,
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*.config.js', '*.config.ts'],
+          allowDefaultProject: ['*.config.js', '*.config.ts', 'packages/db/prisma/seed.js'],
         },
         tsconfigRootDir: import.meta.dirname,
       },

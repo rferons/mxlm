@@ -1,0 +1,34 @@
+{
+  "organization": {
+    "id": "org_seed",
+    "name": "Demo Aviation",
+    "slug": "demo-aviation",
+    "timezone": "America/Denver"
+  },
+  "users": [
+    {
+      "id": "user_seed_owner",
+      "email": "owner@example.com",
+      "displayName": "Owner Pilot",
+      "role": "OWNER",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "user_seed_mechanic",
+      "email": "mechanic@example.com",
+      "displayName": "Mechanic IA",
+      "role": "MECHANIC",
+      "status": "ACTIVE"
+    }
+  ],
+  "aircraft": [
+    {
+      "id": "aircraft_seed",
+      "tailNumber": "N12345",
+      "make": "Cessna",
+      "model": "182T",
+      "serialNumber": "182T-0001",
+      "year": 2010
+    }
+  ]
+}

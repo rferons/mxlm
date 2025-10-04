@@ -78,6 +78,7 @@ tsconfig.tsbuildinfo
 .poetry/
 .pyenv/
 .cargo/
+packages/db/prisma/.generated/
 
 # Editor directories and files
 .idea/

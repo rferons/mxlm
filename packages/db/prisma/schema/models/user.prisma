@@ -1,0 +1,18 @@
+model User {
+  id          String     @id @default(cuid())
+  orgId       String
+  email       String
+  displayName String
+  role        UserRole   @default(VIEWER)
+  status      UserStatus @default(INVITED)
+  inviteToken String?    @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  lastSeenAt  DateTime?
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  uploadedDocuments Document[] @relation("UserUploadedDocuments")
+  auditLog    AuditLog[]
+
+  @@unique([orgId, email])
+  @@index([orgId, role])
+}

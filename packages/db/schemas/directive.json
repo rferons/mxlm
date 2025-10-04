@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mxlm.ai/directive.json",
+  "title": "Directive",
+  "type": "object",
+  "required": [
+    "id",
+    "orgId",
+    "directiveType",
+    "referenceCode",
+    "title",
+    "status",
+    "applicability"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "orgId": {
+      "type": "string"
+    },
+    "directiveType": {
+      "type": "string",
+      "enum": [
+        "AIRWORTHINESS_DIRECTIVE",
+        "SERVICE_BULLETIN",
+        "SERVICE_LETTER",
+        "STC",
+        "ICA"
+      ]
+    },
+    "referenceCode": {
+      "type": "string",
+      "description": "Canonical FAA or OEM identifier"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUPERSEDED", "RESCINDED"]
+    },
+    "summary": {
+      "type": ["string", "null"]
+    },
+    "issuedOn": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "effectiveOn": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Structured criteria describing makes/models/serial ranges impacted"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  },
+  "additionalProperties": false
+}

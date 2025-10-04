@@ -1,0 +1,107 @@
+enum UserRole {
+  OWNER
+  MECHANIC
+  INSPECTOR
+  ADMIN
+  VIEWER
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum ComponentType {
+  AIRFRAME
+  ENGINE
+  PROPELLER
+  APPLIANCE
+  ACCESSORY
+  SUBCOMPONENT
+}
+
+enum MaintenanceEventType {
+  INSPECTION
+  REPAIR
+  ALTERATION
+  AD_COMPLIANCE
+  SB_COMPLIANCE
+  LUBRICATION
+  OIL_CHANGE
+  FUNCTIONAL_CHECK
+  TEST
+  OTHER
+}
+
+enum MaintenanceEventOrigin {
+  MANUAL
+  OCR
+  DIGITAL_IMPORT
+  SYSTEM
+}
+
+enum SignatoryCredentialType {
+  AP
+  IA
+  REPAIR_STATION
+  OTHER
+}
+
+enum DirectiveType {
+  AIRWORTHINESS_DIRECTIVE
+  SERVICE_BULLETIN
+  SERVICE_LETTER
+  STC
+  ICA
+}
+
+enum DirectiveStatus {
+  ACTIVE
+  SUPERSEDED
+  RESCINDED
+}
+
+enum DocumentKind {
+  UPLOAD
+  EXPORT
+  ATTACHMENT
+}
+
+enum DocumentStatus {
+  RECEIVED
+  PROCESSING
+  READY
+  FAILED
+  ARCHIVED
+}
+
+enum EmbeddingScope {
+  DOCUMENT
+  DOCUMENT_PAGE
+  MAINTENANCE_EVENT
+  DIRECTIVE
+  COMPLIANCE_SNAPSHOT
+}
+
+enum AuditAction {
+  CREATED
+  UPDATED
+  DELETED
+  ACCESSED
+  IMPORTED
+  EXPORT_TRIGGERED
+}
+
+enum AuditEntityType {
+  ORGANIZATION
+  USER
+  AIRCRAFT
+  COMPONENT
+  MAINTENANCE_EVENT
+  DIRECTIVE
+  DOCUMENT
+  COMPLIANCE_SNAPSHOT
+  SHARE
+}

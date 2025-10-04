@@ -1,0 +1,22 @@
+model Organization {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  timezone    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  users       User[]
+  aircraft    Aircraft[]
+  directives  Directive[]
+  documents   Document[]
+  embeddings  Embedding[]
+  auditLog    AuditLog[]
+  components  Component[]
+  events      MaintenanceEvent[]
+  compliance  ComplianceSnapshot[]
+  dueItems    DueItem[]
+  shares      Share[]
+  signatories Signatory[]
+
+  @@index([createdAt])
+}

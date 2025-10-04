@@ -1,0 +1,11 @@
+model MaintenanceEventDirective {
+  eventId          String
+  directiveId      String
+  complianceStatus String @db.VarChar(32)
+  notedAt          DateTime    @default(now())
+  notes            String?
+  event            MaintenanceEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  directive        Directive        @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, directiveId])
+}

@@ -5,4 +5,10 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - cpu-features
   - esbuild
+  - prisma
+  - protobufjs
+  - ssh2

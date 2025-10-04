@@ -1,0 +1,27 @@
+model Component {
+  id                 String      @id @default(cuid())
+  orgId              String
+  aircraftId         String?
+  parentComponentId  String?
+  name               String
+  type               ComponentType
+  manufacturer       String?
+  model              String?
+  serialNumber       String?
+  installedAt        DateTime?
+  removedAt          DateTime?
+  totalHours         Decimal?    @db.Decimal(10, 2)
+  totalCycles        Int?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  organization       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  aircraft           Aircraft?    @relation(fields: [aircraftId], references: [id], onDelete: SetNull)
+  parent             Component?   @relation("ComponentHierarchy", fields: [parentComponentId], references: [id], onDelete: SetNull)
+  children           Component[]  @relation("ComponentHierarchy")
+  events             MaintenanceEvent[]
+  dueItems           DueItem[]
+
+  @@index([orgId, type])
+  @@index([aircraftId])
+  @@unique([orgId, serialNumber], map: "components_org_serial_unique")
+}

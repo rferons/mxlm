@@ -1,0 +1,25 @@
+model Embedding {
+  id                         String      @id @default(cuid())
+  orgId                      String
+  scope                      EmbeddingScope
+  targetEventId              String?
+  targetDocumentId           String?
+  targetDocumentPageId       String?
+  targetDirectiveId          String?
+  targetComplianceSnapshotId String?
+  targetAircraftId           String?
+  dimensions                 Int
+  vector                     Float[]
+  createdAt                  DateTime    @default(now())
+  updatedAt                  DateTime    @updatedAt
+  organization               Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  event                      MaintenanceEvent?     @relation("MaintenanceEventEmbeddings", fields: [targetEventId], references: [id], onDelete: Cascade)
+  document                   Document?             @relation("DocumentEmbeddings", fields: [targetDocumentId], references: [id], onDelete: Cascade)
+  documentPage               DocumentPage?         @relation("DocumentPageEmbeddings", fields: [targetDocumentPageId], references: [id], onDelete: Cascade)
+  directive                  Directive?            @relation("DirectiveEmbeddings", fields: [targetDirectiveId], references: [id], onDelete: Cascade)
+  complianceSnapshot         ComplianceSnapshot?   @relation("ComplianceSnapshotEmbeddings", fields: [targetComplianceSnapshotId], references: [id], onDelete: Cascade)
+  aircraft                   Aircraft?             @relation("AircraftEmbeddings", fields: [targetAircraftId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, scope])
+  @@unique([scope, targetEventId, targetDocumentId, targetDocumentPageId, targetDirectiveId, targetComplianceSnapshotId, targetAircraftId])
+}

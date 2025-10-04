@@ -1,0 +1,20 @@
+model DueItem {
+  id             String      @id @default(cuid())
+  orgId          String
+  aircraftId     String
+  componentId    String?
+  directiveId    String?
+  eventType      MaintenanceEventType?
+  title          String
+  dueAt          DateTime?
+  dueHours       Decimal?    @db.Decimal(10, 2)
+  dueCycles      Int?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  organization   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  aircraft       Aircraft    @relation(fields: [aircraftId], references: [id], onDelete: Cascade)
+  component      Component?  @relation(fields: [componentId], references: [id], onDelete: SetNull)
+  directive      Directive?  @relation(fields: [directiveId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, dueAt])
+}

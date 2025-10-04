@@ -1,0 +1,14 @@
+model MaintenanceEventSource {
+  id                String          @id @default(cuid())
+  eventId           String
+  documentId        String?
+  sourceReferenceId String?
+  isPrimary         Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  event             MaintenanceEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  document          Document?       @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  sourceReference   SourceReference? @relation(fields: [sourceReferenceId], references: [id], onDelete: SetNull)
+
+  @@index([eventId])
+}

@@ -1,0 +1,8 @@
+// Prisma schema entrypoint (stub).
+//
+// The authoritative schema sources live under prisma/schema/**. Run
+// `pnpm run --filter db compose` to rebuild prisma/.generated/schema.prisma
+// before invoking Prisma CLI commands manually. Package scripts already do
+// this for you.
+//
+// The generator and datasource blocks are defined in the composed schema.

@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: mxlm-postgres
+    environment:
+      POSTGRES_DB: mxlm
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./packages/db/prisma/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mxlm-network
+
+  # Redis for caching and session storage
+  redis:
+    image: redis:7-alpine
+    container_name: mxlm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mxlm-network
+
+  # MinIO for S3-compatible object storage (development)
+  minio:
+    image: minio/minio:latest
+    container_name: mxlm-minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - mxlm-network
+
+  # LocalStack for AWS services emulation (development)
+  localstack:
+    image: localstack/localstack:latest
+    container_name: mxlm-localstack
+    environment:
+      - SERVICES=s3,sqs,lambda,apigateway,stepfunctions,secretsmanager,kms,ses
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=docker
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - "4566:4566"
+    volumes:
+      - localstack_data:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - mxlm-network
+
+  # Mailhog for email testing (development)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mxlm-mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - mxlm-network
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mxlm-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - mxlm-network
+
+  # Grafana for metrics visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mxlm-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - mxlm-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+  localstack_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  mxlm-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

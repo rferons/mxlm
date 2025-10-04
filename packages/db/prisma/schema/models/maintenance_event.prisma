@@ -1,0 +1,33 @@
+model MaintenanceEvent {
+  id                String                 @id @default(cuid())
+  orgId             String
+  aircraftId        String
+  componentId       String?
+  signatoryId       String?
+  eventType         MaintenanceEventType
+  origin            MaintenanceEventOrigin @default(SYSTEM)
+  performedAt       DateTime
+  recordedAt        DateTime               @default(now())
+  tachHours         Decimal?               @db.Decimal(10, 2)
+  hobbsHours        Decimal?               @db.Decimal(10, 2)
+  cycles            Int?
+  utilizationSource String?
+  description       String
+  correctiveAction  String?
+  notes             String?
+  version           Int                     @default(1)
+  reviewStatus      String?                 @db.VarChar(32)
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  organization      Organization            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  aircraft          Aircraft                @relation(fields: [aircraftId], references: [id], onDelete: Cascade)
+  component         Component?              @relation(fields: [componentId], references: [id], onDelete: SetNull)
+  signatory         Signatory?              @relation(fields: [signatoryId], references: [id], onDelete: SetNull)
+  directives        MaintenanceEventDirective[]
+  sources           MaintenanceEventSource[]
+  embeddings        Embedding[]             @relation("MaintenanceEventEmbeddings")
+
+  @@index([orgId, aircraftId, performedAt])
+  @@index([componentId])
+  @@index([origin, reviewStatus])
+}

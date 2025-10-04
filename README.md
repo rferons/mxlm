@@ -1,4 +1,4 @@
-# GA Maintenance LogbookLM
+# MXLM - The easiest way to manage your aircraft logbooks
 
 A NotebookLM-style assistant for ingesting, normalizing, and analyzing aircraft maintenance logbooks. This system enables aircraft owners, operators, and mechanics to share, search, and track compliance and predictive maintenance events through natural language interaction.
 

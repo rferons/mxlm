@@ -1,0 +1,16 @@
+model Signatory {
+  id              String                  @id @default(cuid())
+  orgId           String
+  fullName        String
+  credentialType  SignatoryCredentialType
+  certificateId   String?
+  company         String?
+  email           String?
+  phone           String?
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  organization    Organization            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  events          MaintenanceEvent[]
+
+  @@unique([orgId, certificateId])
+}

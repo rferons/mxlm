@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mxlm.ai/maintenance-event.json",
+  "title": "MaintenanceEvent",
+  "type": "object",
+  "required": [
+    "id",
+    "orgId",
+    "aircraftId",
+    "eventType",
+    "origin",
+    "performedAt",
+    "description"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier for the normalized maintenance event"
+    },
+    "orgId": {
+      "type": "string",
+      "description": "Tenant scope identifier"
+    },
+    "aircraftId": {
+      "type": "string",
+      "description": "Primary aircraft impacted by the event"
+    },
+    "componentId": {
+      "type": ["string", "null"],
+      "description": "Component, engine, or appliance affected by the event"
+    },
+    "signatoryId": {
+      "type": ["string", "null"],
+      "description": "Reference to the mechanic or IA signing the entry"
+    },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "INSPECTION",
+        "REPAIR",
+        "ALTERATION",
+        "AD_COMPLIANCE",
+        "SB_COMPLIANCE",
+        "LUBRICATION",
+        "OIL_CHANGE",
+        "FUNCTIONAL_CHECK",
+        "TEST",
+        "OTHER"
+      ]
+    },
+    "origin": {
+      "type": "string",
+      "enum": ["MANUAL", "OCR", "DIGITAL_IMPORT", "SYSTEM"]
+    },
+    "performedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tachHours": {
+      "type": ["number", "null"],
+      "description": "Aircraft tach time at completion"
+    },
+    "hobbsHours": {
+      "type": ["number", "null"],
+      "description": "Aircraft Hobbs meter reading at completion"
+    },
+    "cycles": {
+      "type": ["integer", "null"],
+      "description": "Cycle count associated with the event"
+    },
+    "description": {
+      "type": "string"
+    },
+    "correctiveAction": {
+      "type": ["string", "null"]
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["documentId", "pageIndex"],
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bbox": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

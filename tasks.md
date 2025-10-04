@@ -14,6 +14,7 @@
    - Goal: Model the canonical Postgres schema aligned with the PRD entity checklist (organizations, users, aircraft, components, events, directives, embeddings, audit) and provide repeatable migrations.
    - Deliverables: `packages/db` with Prisma (or Kysely + drizzle) schema, generated SQL migrations, seed fixtures, and JSON schema exports for LLM grounding.
    - Verification: `pnpm --filter db test` runs schema validation + migration dry-run against ephemeral Postgres (docker-compose or testcontainer) and `pnpm --filter db generate` succeeds.
+   - Status: ✅ Completed — Prisma schema modularized into reusable enum/model files with compose script, plus migrations, seeds, JSON schemas, and Vitest/Testcontainers coverage added in `packages/db`.
 
 4. **Shared Domain Contracts**
    - Goal: Publish TypeScript and Python packages defining JSON schemas/TypeBox/Pydantic models for maintenance events, directives, compliance snapshots, and ingestion payloads.
