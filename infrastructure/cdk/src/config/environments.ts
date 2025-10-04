@@ -26,7 +26,7 @@ export const DEFAULT_ENVIRONMENT = 'dev';
 
 export function resolveEnvironment(app: App): EnvironmentSettings {
   const contextName =
-    (app.node.tryGetContext('env') as string | undefined) ?? process.env.CDK_ENV;
+    (app.node.tryGetContext('env') as string | undefined) ?? (process.env.CDK_ENV as string | undefined);
   const environmentName = contextName ?? DEFAULT_ENVIRONMENT;
   const config = environments[environmentName];
 
