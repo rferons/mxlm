@@ -8,7 +8,7 @@
   },
   "packageManager": "pnpm@10.18.0",
   "scripts": {
-    "lint": "eslint ./apps ./services ./infrastructure ./packages --ext .ts,.tsx,.js,.cjs --max-warnings=0",
+    "lint": "eslint ./apps ./services ./infrastructure ./packages --max-warnings=0",
     "test": "vitest run --passWithNoTests",
     "verify": "pnpm run lint && pnpm run test && poetry run pytest"
   },
